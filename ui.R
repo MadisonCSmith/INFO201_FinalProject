@@ -2,45 +2,90 @@ library("shiny")
 library(maps)
 library(mapproj)
 
-ui <- fluidPage(
+ui <- navbarPage("Global Terrorism",
   
-  # title 
-  titlePanel("Global Terrorism"),
+  # code for the overview tab
+  tabPanel("Overview",
+    titlePanel("Trends in Global Terrorism Over Time"),
+    textOutput("overview")
+  ),
   
-  # creates two columns
-  sidebarLayout(
-    
-    # creates left column with the slider/dropdown menu
-    sidebarPanel(
-      
-      # creates the dropdown menu
-          # put in widgets
-    ),
-    
-    
-    # creates the right columns with the visualizations
-    mainPanel(
-      
-      # creates two tabs- the map and table tab
-      tabsetPanel(type = "tabs",
-                  
-        # creates the table tab
-        tabPanel("Hannah", tableOutput("table")),
-          # put in plot
-        
-        tabPanel("Zale", tableOutput("table")),
-        # put in plot
-                
-        tabPanel("Justin", tableOutput("table")),
-        # put in plot
-                
-        tabPanel("Madison", tableOutput("table"))
-        # put in plot        
-                           
+  # all justin's ui code
+  tabPanel("Justin",
+    sidebarLayout(
+             
+      sidebarPanel(
+
+          sliderInput("year",
+              "Year:",
+              value = 0,
+              min = 5,
+              max = 10)
+          ),
+             
+      mainPanel(
+        textOutput("justin")
       )
-      
+    )
+  ),           
+
+  # all zale's ui code
+  tabPanel("Zale",
+    sidebarLayout(
+             
+      sidebarPanel(
+
+          sliderInput("year",
+                "Year:",
+                value = 0,
+                min = 5,
+                max = 10)
+          ),
+             
+      mainPanel(
+        textOutput("zale") 
+      )
+    )
+  ),           
+
+  # all hannah's ui code
+  tabPanel("Hannah",
+           
+    sidebarLayout(
+             
+      sidebarPanel(
+        sliderInput("year",
+              "Year:",
+              value = 0,
+              min = 5,
+              max = 10)
+        ),
+             
+      mainPanel(
+        textOutput("hannah")
+      )
+    )
+  ),
+  
+  # all Mady's ui code
+  tabPanel("Mady",
+    sidebarLayout(
+             
+      sidebarPanel(
+        sliderInput("year",
+              "Year:",
+              value = 0,
+              min = 5,
+              max = 10)
+        ),
+             
+      mainPanel(
+        textOutput("mady") 
+      )
     )
   )
 )
+
+  
 
 shinyUI(ui)
