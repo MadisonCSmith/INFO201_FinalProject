@@ -79,21 +79,21 @@ ui <- navbarPage("Global Terrorism",
                       "day" = "iday")),
         
         br(),
-        
-        sliderInput("startyear",
-                    "Start Year:",
-                    value = 1970,
-                    min = 1970,
-                    max = 2016),
-        
+      
+      textInput("startyear", 
+                "Start year (1970 - 2016)", 
+                value = "1970", 
+                width = NULL, 
+                placeholder = NULL),
       
       br(),
       
-      sliderInput("endyear",
-                  "End Year:",
-                  value = 2016,
-                  min = 1970,
-                  max = 2016)
+      textInput("endyear", 
+                "End year (1970 - 2016)", 
+                value = "2016", 
+                width = NULL, 
+                placeholder = NULL),
+      br()
       
     ),
       

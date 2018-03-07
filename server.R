@@ -76,7 +76,11 @@ server <- function(input, output) {
   })
   
   output$mady <- renderText({
-    paste("mady- all the things")
+    paste("This line plot shows the frequency of terrorist attacks
+          over time. The frequency can be by year, month of the year, or day of the month. What
+          unit is shown can be selected using the radio buttons on the left. The 
+          plot can also show the data over a certain range of years, using the sliders
+          on the left.")
     
   })
   
