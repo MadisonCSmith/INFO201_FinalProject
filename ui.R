@@ -72,15 +72,26 @@ ui <- navbarPage("Global Terrorism",
     sidebarLayout(
              
       sidebarPanel(
+        
+        radioButtons("unit", "Group attacks by unit of time:",
+                    c("year" = "iyear",
+                      "month" = "imonth",
+                      "day" = "iday")),
+        
+        br(),
+        
         sliderInput("year",
-              "Year:",
-              value = 0,
-              min = 5,
-              max = 10)
-        ),
+                    "Year:",
+                    value = 1993,
+                    min = 1970,
+                    max = 2016)
+        
+      ),
+      
              
       mainPanel(
-        textOutput("mady") 
+        textOutput("mady"),
+        plotOutput("alsomady")
       )
     )
   )
