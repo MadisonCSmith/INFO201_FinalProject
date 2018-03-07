@@ -42,27 +42,17 @@ server <- function(input, output) {
   
   # madys server code
   output$alsomady <- renderPlot({
-    #the.data <- group_by(d(), iyear)
-    #the.data <- filter(d(), iyear < input$year)
-    #the.data <- group_by(d(), iyear) %>%
-     # filter(iyear <= 2000) %>%
-      #summarize(count = n())
+
+    current.unit <- rlang::sym(input$unit)
     
-    #current.year <- rlang::sym(input$year)
-    current.year <- rlang::sym(input$unit)
-    print(current.year)
-    
-    the.data <- filter(d(), iyear <= 2000) %>%
-      group_by(!!current.year) %>%
+    the.data <- filter(d(), iyear <= input$endyear) %>%
+      filter(iyear >= input$startyear) %>%
+      group_by(!!current.unit) %>%
       summarize(count = n())
     
     View(the.data)
     
-    print(input$year)
-    print(input$unit)
-    
-    #ggplot(data = the.data) +
-      #geom_line(mapping = aes(x=iyear, y=count))
+    print(input$startyear)
     
     if (input$unit == "iyear") {
       print("year")

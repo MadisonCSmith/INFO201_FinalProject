@@ -80,13 +80,22 @@ ui <- navbarPage("Global Terrorism",
         
         br(),
         
-        sliderInput("year",
-                    "Year:",
-                    value = 1993,
+        sliderInput("startyear",
+                    "Start Year:",
+                    value = 1970,
                     min = 1970,
-                    max = 2016)
+                    max = 2016),
         
-      ),
+      
+      br(),
+      
+      sliderInput("endyear",
+                  "End Year:",
+                  value = 2016,
+                  min = 1970,
+                  max = 2016)
+      
+    ),
       
              
       mainPanel(
