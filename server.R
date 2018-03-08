@@ -8,11 +8,18 @@ library(mapproj)
 
 server <- function(input, output) {
   
- 
+  my.data <- read.csv('data/globalterrorism.csv', 
+                      stringsAsFactors=FALSE)
+  
   d <- reactive({
-    my.data <- read.csv('data/globalterrorism.csv', 
-                        stringsAsFactors=FALSE)
-    #my.data <- my.data %>% na.omit() # doesn't like that
+    
+    current.unit <- rlang::sym(input$unit)
+
+    the.data <- filter(my.data, iyear <= input$endyear) %>%
+      filter(iyear >= input$startyear) %>%
+      group_by(!!current.unit) %>%
+      summarize(count = n())
+  
 
   })
   
@@ -43,32 +50,22 @@ server <- function(input, output) {
   # madys server code
   output$alsomady <- renderPlot({
 
-    current.unit <- rlang::sym(input$unit)
-    
-    the.data <- filter(d(), iyear <= input$endyear) %>%
-      filter(iyear >= input$startyear) %>%
-      group_by(!!current.unit) %>%
-      summarize(count = n())
-    
-    View(the.data)
-    
-    print(input$startyear)
     
     if (input$unit == "iyear") {
       print("year")
-      return (ggplot(data = the.data) +
+      return (ggplot(data = d()) +
         geom_line(mapping = aes(x=iyear, y=count)))
     } 
     
     if (input$unit == "imonth") {
       print("month")
-      return (ggplot(data = the.data) +
+      return (ggplot(data = d()) +
         geom_line(mapping = aes(x=imonth, y=count)))
     }
     
     if (input$unit == "iday") {
       print("iday")
-      return (ggplot(data = the.data) +
+      return (ggplot(data = d()) +
         geom_line(mapping = aes(x=iday, y=count)))
     }
     
