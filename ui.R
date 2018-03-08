@@ -31,7 +31,8 @@ ui <- navbarPage("Global Terrorism",
             "Countries:",
             my.data[, "country_txt"],
             multiple = TRUE,
-            selected = c("United States", "Spain", "Uruguay", "Argentina", "Russia"))
+            selected = c("United States", "Spain", "Uruguay", "Argentina", 
+                         "Russia", "Iraq"))
       ),
              
       mainPanel(

@@ -27,7 +27,8 @@ server <- function(input, output) {
   output$justin <- renderPlot({
     
     ggplot(data = user.data()) +
-      geom_bar(mapping = aes(x = country_txt, fill = country_txt), show.legend = FALSE) +
+      geom_bar(mapping = aes(x = country_txt, fill = country_txt),
+               show.legend = FALSE) +
       labs(
         x = "Countries",
         y = "Terrorist Attacks"
@@ -48,12 +49,12 @@ server <- function(input, output) {
           the most terrorism all this time up to 1994, where the US takes the 
           top spot again. At this point in time Russia makes a huge increase in 
           terrorist attacks in their country. From then on until 2016, 
-          terrorism has declined in all 4 of these countries, but the US and 
-          Russia still have large amounts of terrorism compared to other 
-          countries. Although Argentina, Russia, Spain, the United States, 
-          and Uruguay are generally more prone to terrorism than other 
-          countries, different countries can also be chosen to be compared over 
-          time.")
+          terrorism has declined in all 4 of these countries, however, in 2003, 
+          Iraq gains a huge increase in terrorist attacks. The amount of attacks
+          on Iraq keep increasing all the way through 2016. Although Argentina,
+          Iraq, Russia, Spain, the United States, and Uruguay are generally more
+          prone to terrorism than other countries, different countries can also
+          be chosen to be compared over time.")
   })
   
   # zales server code
