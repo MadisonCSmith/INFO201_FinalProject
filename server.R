@@ -103,7 +103,8 @@ server <- function(input, output) {
           year or day of the month. However, the frequency of terrorist attck do change a lot by year. The plot 
           shows that the number of terrorist attacks spiked dramatically after 2010.")
   })
-
+  #creates a dataframe of the United States and the input$country 
+  #then it filters it by the input$year
     hl.country <- reactive({
       new.data.frame <- filter(my.data, country_txt == "United States") %>% 
         filter(iyear == input$years)
@@ -112,6 +113,8 @@ server <- function(input, output) {
       combine <- full_join(new.data.frame, new.one)
     }) 
     
+    #create the dataframe that will be used find the number of times 
+    #United States and the input$country occurs 
     h.code <- reactive ({
       count.united.states <- select(hl.country(), country_txt) %>% count(country_txt == "United States")  
       # gets the number of times United States is used in the dataframe 
@@ -128,6 +131,7 @@ server <- function(input, output) {
       combine.data
     })
     
+    #renders the bar plot 
     output$bar <- renderPlot({
       return(ggplot(data = h.code(), aes(x = name, y = n, fill = name), show.legend = FALSE) + 
                geom_bar(stat = "identity"))
