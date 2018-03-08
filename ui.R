@@ -65,8 +65,54 @@ ui <- navbarPage("Global Terrorism",
                           h4("- Hannah, Justin, Mady, and Zale")
                           ),
                  
+                 # All of Mady's ui code
+                 tabPanel("Change in Frequency",
+                          h2(" Have terrorist attacks increased in frequency over the past forty-some years?"),
+                          
+                          # creates two columns 
+                          sidebarLayout(
+                            
+                            # creates left columns with widgets       
+                            sidebarPanel(
+                              
+                              # creates a radio buttom widget
+                              radioButtons("unit", "Group attacks by unit of time:",
+                                           c("year" = "iyear",
+                                             "month" = "imonth",
+                                             "day" = "iday")),
+                              
+                              br(),
+                              
+                              # creates a text input widget
+                              textInput("startyear", 
+                                        "Start year (1970 - 2016)", 
+                                        value = "1970", 
+                                        width = NULL, 
+                                        placeholder = NULL),
+                              
+                              br(),
+                              
+                              # creates another text input widget
+                              textInput("endyear", 
+                                        "End year (1970 - 2016)", 
+                                        value = "2016", 
+                                        width = NULL, 
+                                        placeholder = NULL),
+                              br()
+                              
+                            ),
+                            # creates the right column with the chart       
+                            mainPanel(
+                              textOutput("mady"),
+                              plotOutput("alsomady"),
+                              textOutput("anothermady")
+                            )
+                          )
+                 ),
+                 
+                 
                  # Creates the tabPanel relating to types of terrorist attacks in
-                 # different locations around the world..
+                 # different locations around the world.
                  tabPanel("Types Of Attacks",
                           # Creates a title for the titlePanel.
                           titlePanel("What Types Of Attacks Are Most Frequent?"),
@@ -92,9 +138,9 @@ ui <- navbarPage("Global Terrorism",
                               # Outputs a sliderInput for the span of years.
                               sliderInput("year",
                                           "Year Span:",
-                                          min = year.range[1],
-                                          max = year.range[47],
-                                          value = year.range[c(1, 47)],
+                                          min = zale.year.range[1],
+                                          max = zale.year.range[47],
+                                          value = zale.year.range[c(1, 47)],
                                           step = 1,
                                           sep = ""),
                               # Outputs a selectInput for the types of attacks.
@@ -148,13 +194,64 @@ ui <- navbarPage("Global Terrorism",
                                                       details about frequency and type of attack
                                                       as well, which could lead to further
                                                       investigation.")
-                                           )
-                                       )
-                                  )
-                           )
-                 )
-)
+                                          )
+                             )
+                         )
+                      )
+                  ),
 
   
+                  # all justin's ui code
+                  tabPanel("Country Comparison",
+                    sidebarLayout(
+                             
+                      sidebarPanel(
+                
+                          sliderInput("year",
+                              "Year:",
+                              value = year.range[1],
+                              min = year.range[1],
+                              max = year.range[2],
+                              step = 1),
+                          
+                          selectInput("countries",
+                            "Countries:",
+                            my.data[, "country_txt"],
+                            multiple = TRUE,
+                            selected = c("United States", "Spain", "Uruguay", "Argentina", 
+                                         "Russia", "Iraq"))
+                      ),
+                             
+                      mainPanel(
+                        plotOutput("justin"),
+                        textOutput("justin.text")
+                      )
+                    )
+                  ),          
+                
+                  tabPanel("Hannah",               
+                    sidebarLayout(
+                      sidebarPanel(
+                        selectInput('country', "Select the country you would like to compare to",
+                                    choice = hannah.vector),
+                        sliderInput("years", "Select the desired year", 
+                                    min=1970, max=2016, value = 1991, step = 1)
+                      ),
+                      
+                      mainPanel( 
+                        br(),
+                        p("The bar plot below will answer the question above depending on the country
+                          and year that is picked. The bar graph will always show the United States data 
+                          however, the compared country will change."),
+                        plotOutput("bar"),
+                        br(),
+                        p("As you can see, the data is always change according to the year and country. 
+                          It is interesting to see the frequency of terrorist attack across country and year 
+                          compared to the United States. There are trends of terrorist attack depending on 
+                          year and country that reflect the state of country.")
+                      )
+                    )
+                 )
+)
 
 shinyUI(ui)
