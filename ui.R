@@ -229,7 +229,7 @@ ui <- navbarPage("Global Terrorism",
                     )
                   ),          
                 
-                  tabPanel("Hannah",               
+                  tabPanel("United States Comparison",               
                     sidebarLayout(
                       sidebarPanel(
                         selectInput('country', "Select the country you would like to compare to",
