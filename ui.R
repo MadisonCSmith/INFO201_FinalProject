@@ -1,6 +1,10 @@
 library("shiny")
 library(maps)
 library(mapproj)
+source("./server.R")
+
+my.data <- arrange(my.data, country_txt)
+year.range <- range(my.data$iyear)
 
 ui <- navbarPage("Global Terrorism",
   
@@ -11,20 +15,28 @@ ui <- navbarPage("Global Terrorism",
   ),
   
   # all justin's ui code
-  tabPanel("Justin",
+  tabPanel("Country Comparison",
     sidebarLayout(
              
       sidebarPanel(
 
           sliderInput("year",
               "Year:",
-              value = 0,
-              min = 5,
-              max = 10)
-          ),
+              value = year.range[1],
+              min = year.range[1],
+              max = year.range[2],
+              step = 1),
+          
+          selectInput("country",
+            "Countries:",
+            my.data[, "country_txt"],
+            multiple = TRUE,
+            selected = c("United States", "Spain", "Uruguay", "Argentina", "Russia"))
+      ),
              
       mainPanel(
-        textOutput("justin")
+        plotOutput("justin"),
+        textOutput("justin.text")
       )
     )
   ),           
