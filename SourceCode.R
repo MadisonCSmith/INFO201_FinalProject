@@ -59,7 +59,7 @@ zale.world.map <- map_data("world") %>%
 colnames(zale.world.map)[5] <- "Country"
 
 # Adds a new column of two digit ISO codes to each country.
-zale.world.map$a2 <- iso.alpha(world.map$Country, n = 2)
+zale.world.map$a2 <- iso.alpha(zale.world.map$Country, n = 2)
 
 # Stores the iso3166 data frame in a new data frame.
 iso.data.frame <- iso3166
