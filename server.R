@@ -1,16 +1,16 @@
-library("shiny")
+library(shiny) 
 library(dplyr)
-library("ggplot2")
+library(ggplot2)
 library(maps)
 library(mapproj)
 
 
 # renders some text paragraphs and a line chart of data
 server <- function(input, output) {
-  
   # reads in csv data
-  my.data <- read.csv('data/globalterrorism.csv', 
+  my.data <- read.csv('./data/globalterrorism.csv', 
                       stringsAsFactors=FALSE)
+  my.data <- arrange(my.data, country_txt)
   
   # reactive element that changes the data set everytime the widgets are changed
   d <- reactive({
@@ -85,8 +85,6 @@ server <- function(input, output) {
             y = "count"
           ))
     }
-    
-    
   })
   
   # creates a paragraph of text explaining the chart
@@ -105,6 +103,38 @@ server <- function(input, output) {
           year or day of the month. However, the frequency of terrorist attck do change a lot by year. The plot 
           shows that the number of terrorist attacks spiked dramatically after 2010.")
   })
-}
+
+    hl.country <- reactive({
+      new.data.frame <- filter(my.data, country_txt == "United States") %>% 
+        filter(iyear == input$years)
+      new.one <- filter(my.data, country_txt == input$country) %>%
+        filter(iyear == input$years)
+      combine <- full_join(new.data.frame, new.one)
+    }) 
+    
+    h.code <- reactive ({
+      count.united.states <- select(hl.country(), country_txt) %>% count(country_txt == "United States")  
+      # gets the number of times United States is used in the dataframe 
+      new <- count.united.states[,2:2]
+      new.num <- new[-1,] # grabs the number of occurances of that dataframe
+      new.num$name <- "United States"
+      
+      count.input <- select(hl.country(), country_txt) %>% count(country_txt == input$country)  
+      input.count <- count.input[,2:2] 
+      input.num <- input.count[-1,] # grabs the number of occurances of that dataframe
+      input.num$name <- input$country
+      
+      combine.data <- full_join(input.num, new.num)
+      combine.data
+    })
+    
+    output$bar <- renderPlot({
+      return(ggplot(data = h.code(), aes(x = name, y = n, fill = name), show.legend = FALSE) + 
+               geom_bar(stat = "identity"))
+    })
+    
+} 
+
 
 shinyServer(server)
+
