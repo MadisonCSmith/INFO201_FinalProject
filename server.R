@@ -1,14 +1,27 @@
-library("shiny")
+library(shiny) 
 library(dplyr)
-library("ggplot2")
+library(ggplot2)
 library(maps)
 library(mapproj)
 
-my.data <- read.csv('data/globalterrorism.csv', 
-                    stringsAsFactors=FALSE)
-my.data <- arrange(my.data, country_txt)
-
 server <- function(input, output) {
+  # reads in csv data
+  my.data <- read.csv('./data/globalterrorism.csv', 
+                      stringsAsFactors=FALSE)
+  my.data <- arrange(my.data, country_txt)
+
+  # reactive element that changes the data set everytime the widgets are changed
+  d <- reactive({
+    
+    current.unit <- rlang::sym(input$unit)
+    
+    # filter data according to inputs in widgets
+    the.data <- filter(my.data, iyear <= input$endyear) %>%
+      filter(iyear >= input$startyear) %>%
+      group_by(!!current.unit) %>%
+      summarize(count = n())
+    
+  })
   
   # overview server code
   output$overview <- renderText({
@@ -20,7 +33,7 @@ server <- function(input, output) {
   
   user.data <- reactive({
     country.data <- my.data %>%
-      filter(country_txt %in% input$country) %>%
+      filter(country_txt %in% input$countries) %>%
       filter(iyear == input$year)
     return(country.data)
   })
@@ -63,18 +76,96 @@ server <- function(input, output) {
     
   })
   
-  # hannahs server code
-  output$hannah <- renderText({
-    paste("hannah- all the things")
-    
-  })
-  
   # madys server code
+  output$alsomady <- renderPlot({
+    
+    # shows year unit chart
+    if (input$unit == "iyear") {
+      print("year")
+      return (ggplot(data = d()) +
+        geom_line(mapping = aes(x=iyear, y=count)) +
+          labs(
+            x = "year",
+            y = "count"
+          ))
+    } 
+    
+    # shows month unit chart
+    if (input$unit == "imonth") {
+      print("month")
+      return (ggplot(data = d()) +
+        geom_line(mapping = aes(x=imonth, y=count))
+        +
+          labs(
+            x = "month",
+            y = "count"
+          ))
+    }
+    
+    # shows day unit chart
+    if (input$unit == "iday") {
+      print("iday")
+      return (ggplot(data = d()) +
+        geom_line(mapping = aes(x=iday, y=count)) +
+          labs(
+            x = "day",
+            y = "count"
+          ))
+    }
+  })
+  
+  # creates a paragraph of text explaining the chart
   output$mady <- renderText({
-    paste("mady- all the things")
+    paste("This line plot shows the frequency of terrorist attacks
+          over time. The frequency can be by year, month of the year, or day of the month. What
+          unit is shown can be selected using the radio buttons on the left. The 
+          plot can also show the data over a certain range of years, using the sliders
+          on the left.")
     
   })
   
-}
+  # creates another paragraph of text explaining the chart
+  output$anothermady <- renderText({
+    paste("The plot above shows that while the frequency in terrorist attacks do not change much by month of the 
+          year or day of the month. However, the frequency of terrorist attck do change a lot by year. The plot 
+          shows that the number of terrorist attacks spiked dramatically after 2010.")
+  })
+  #creates a dataframe of the United States and the input$country 
+  #then it filters it by the input$year
+    hl.country <- reactive({
+      new.data.frame <- filter(my.data, country_txt == "United States") %>% 
+        filter(iyear == input$years)
+      new.one <- filter(my.data, country_txt == input$country) %>%
+        filter(iyear == input$years)
+      combine <- full_join(new.data.frame, new.one)
+    }) 
+    
+    #create the dataframe that will be used find the number of times 
+    #United States and the input$country occurs 
+    h.code <- reactive ({
+      count.united.states <- select(hl.country(), country_txt) %>% count(country_txt == "United States")  
+      # gets the number of times United States is used in the dataframe 
+      new <- count.united.states[,2:2]
+      new.num <- new[-1,] # grabs the number of occurances of that dataframe
+      new.num$name <- "United States"
+      
+      count.input <- select(hl.country(), country_txt) %>% count(country_txt == input$country)  
+      input.count <- count.input[,2:2] 
+      input.num <- input.count[-1,] # grabs the number of occurances of that dataframe
+      input.num$name <- input$country
+      
+      combine.data <- full_join(input.num, new.num)
+      combine.data
+    })
+    
+    #renders the bar plot 
+    output$bar <- renderPlot({
+      return(ggplot(data = h.code(), aes(x = name, y = n, fill = name), show.legend = FALSE) + 
+               geom_bar(stat = "identity"))
+    })
+    
+} 
+
 
 shinyServer(server)
+
