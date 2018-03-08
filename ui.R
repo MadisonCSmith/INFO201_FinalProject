@@ -68,7 +68,9 @@ ui <- navbarPage("Global Terrorism",
   ),
   
   # all Mady's ui code
-  tabPanel("Mady",
+  tabPanel("Change in Frequency",
+    h2("Change in Frequency of Terrorist Attacks over Time"),
+    
     sidebarLayout(
              
       sidebarPanel(
@@ -100,7 +102,8 @@ ui <- navbarPage("Global Terrorism",
              
       mainPanel(
         textOutput("mady"),
-        plotOutput("alsomady")
+        plotOutput("alsomady"),
+        textOutput("anothermady")
       )
     )
   )

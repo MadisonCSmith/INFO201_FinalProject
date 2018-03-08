@@ -84,6 +84,13 @@ server <- function(input, output) {
     
   })
   
+  output$anothermady <- renderText({
+    paste("The plot above shows that while the frequency in terrorist attacks do not change much by month of the 
+          year or day of the month. However, the frequency of terrorist attck do change a lot by year. The plot 
+          shows that the number of terrorist attacks spiked dramatically after 2010.")
+    
+  })
+  
 }
 
 shinyServer(server)
