@@ -69,12 +69,15 @@ ui <- navbarPage("Global Terrorism",
   
   # all Mady's ui code
   tabPanel("Change in Frequency",
-    h2("Change in Frequency of Terrorist Attacks over Time"),
+    h2(" Have terrorist attacks increased in frequency over the past forty-some years?"),
     
+    # creates two columns 
     sidebarLayout(
-             
+      
+      # creates left columns with widgets       
       sidebarPanel(
         
+        # creates a radio buttom widget
         radioButtons("unit", "Group attacks by unit of time:",
                     c("year" = "iyear",
                       "month" = "imonth",
@@ -82,6 +85,7 @@ ui <- navbarPage("Global Terrorism",
         
         br(),
       
+      # creates a text input widget
       textInput("startyear", 
                 "Start year (1970 - 2016)", 
                 value = "1970", 
@@ -90,6 +94,7 @@ ui <- navbarPage("Global Terrorism",
       
       br(),
       
+      # creates another text input widget
       textInput("endyear", 
                 "End year (1970 - 2016)", 
                 value = "2016", 
@@ -99,7 +104,7 @@ ui <- navbarPage("Global Terrorism",
       
     ),
       
-             
+      # creates the right column with the chart       
       mainPanel(
         textOutput("mady"),
         plotOutput("alsomady"),
