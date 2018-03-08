@@ -4,6 +4,7 @@
 # Zale de Jong
 # Section AF - Team 2
 # Final Project
+# server file
 
 source("SourceCode.R")
 
