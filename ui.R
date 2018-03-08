@@ -136,7 +136,7 @@ ui <- navbarPage("Global Terrorism",
                                 alter the years and location of terrorist attacks."),
                               
                               # Outputs a sliderInput for the span of years.
-                              sliderInput("year",
+                              sliderInput("zale_year",
                                           "Year Span:",
                                           min = zale.year.range[1],
                                           max = zale.year.range[47],
